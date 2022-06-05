@@ -1,25 +1,15 @@
 #
 # Interface Traffic Usage 
 #
-# Usage example:
-# /tool fetch url="https://github.com/pavelkim/mikrotik/releases/latest/download/mikrotik_interface_traffic_usage.rsc" dst-path="scripts/mikrotik_interface_traffic_usage.rsc"
-# /import scripts/mikrotik_interface_traffic_usage.rsc
-# :global influxDBURL ""
-# /system scheduler add interval=5m name=interface_traffic_usage on-event=":global influxDBURL $influxDBURL; /import scripts/mikrotik_interface_traffic_usage.rsc" policy=read,write,policy,test start-time=startup
-#
 # Comment payload example:
 # - {traffic:null}
 # - {traffic: rx=1300 tx=1700 total=3000}
 # - Custom text here {traffic: rx=1300 tx=1700 total=3000}
 # - Custom text here {traffic: rx=1300 tx=1700 total=3000} more custom text
-#
-# Variables:
-# ----------
-# :local influxDBURL "https://influx.db.server:port/endpoint"
-#
 
 
-:global influxDBURL
+
+:global influxDBURL "http://influx.db.server:8086/api/v2/write?org=ORAGNIZATION&bucket=BUCKET&precision=ns"
 
 :local version DEV
 :local currentItemName
@@ -83,7 +73,6 @@
 
 }
 
-:log info message=" *** Interface Traffic Usage v$version START ***"
 :set scriptRunDatetime ( [:tostr [/system clock get date]] . " " . [:tostr [/system clock get time]] )
 :set deviceIdentity ( [/system identity get name] )
 
@@ -157,11 +146,10 @@
 			:log info message="ITU: Item: $itemID Updated data and now sending a notification."
 			
 			:set postRequestPayload ( "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_rx=$currentItemNowRx" . "\n" .  "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_tx=$currentItemNowTx" )
-			/tool fetch url="$influxDBURL" mode=https keep-result=no check-certificate=no http-method=post http-data="$postRequestPayload"
+			/tool fetch url="$influxDBURL" http-header-field="Authorization: TOKEN YOUR-TOKEN,Content-Type: text/plain; charset=utf-8,Content-Type: text/plain; charset=utf-8" keep-result=no http-method=post http-data="$postRequestPayload"
 		}
 
 	}
 
 }
 
-:log info message=" *** Interface Traffic Usage FINISH ***"
