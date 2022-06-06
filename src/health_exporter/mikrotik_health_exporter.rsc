@@ -1,20 +1,4 @@
-#
-# Health Monitoring
-#
-# Usage example:
-# --------------
-# /tool fetch url="https://github.com/pavelkim/mikrotik/releases/latest/download/mikrotik_health_exporter.rsc" dst-path="scripts/mikrotik_health_exporter.rsc"
-# /import scripts/mikrotik_health_exporter.rsc
-# :global influxDBURL ""
-# /system scheduler add interval=1m name=mikrotik_health_exporter on-event=":global influxDBURL $influxDBURL; /import scripts/mikrotik_health_exporter.rsc" policy=read,test start-time=startup
-#
-# Variables:
-# ----------
-# :local influxDBURL "https://influx.db.server:port/endpoint"
-#
-
-
-:global influxDBURL
+:global influxDBURL "http://influx.db.server:8086/api/v2/write?org=ORAGNIZATION&bucket=BUCKET&precision=ns"
 
 :local version DEV
 :local scriptRunDatetime
@@ -32,7 +16,6 @@
 :local postRequestPayloadParts ({})
 :local postRequestPayload
 
-:log info message=" *** Health Monitoring v$version START ***"
 
 :if ([:tostr [:typeof $influxDBURL ]] = "nothing" ) do={
 	:error "Error: can't read out variable \$influxDBURL. InfluxDB URL not set, exiting."
@@ -85,5 +68,5 @@
 	};
 }
 
-/tool fetch url="$influxDBURL" keep-result=no check-certificate=no http-method=post http-data="$postRequestPayload"
-:log info message=" *** Health Monitoring FINISH ***"
+/tool fetch url="$influxDBURL" http-header-field="Authorization: TOKEN YOUR-TOKEN,Content-Type: text/plain; charset=utf-8,Content-Type: text/plain; charset=utf-8" keep-result=no http-method=post http-data="$postRequestPayload"
+
