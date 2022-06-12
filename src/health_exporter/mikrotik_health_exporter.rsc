@@ -3,7 +3,6 @@
 :local version DEV
 :local scriptRunDatetime
 :local deviceIdentity
-:local deviceTemperature
 :local deviceMemFree
 :local deviceMemTotal
 :local deviceDiskFree
@@ -23,7 +22,6 @@
 
 :set scriptRunDatetime ( [:tostr [ /system clock get date ]] . " " . [:tostr [ /system clock get time ]] )
 :set deviceIdentity ( [ /system identity get name] )
-:set deviceTemperature ( [ /system health get temperature ] )
 :set deviceMemFree ( [ /system resource get free-memory ] )
 :set deviceMemTotal ( [ /system resource get total-memory ] )
 :set deviceDiskFree ( [ /system resource get free-hdd-space ] )
@@ -35,7 +33,6 @@
 
 :log debug message="HealthMon: scriptRunDatetime: '$scriptRunDatetime'"
 :log debug message="HealthMon: deviceIdentity: '$deviceIdentity'"
-:log debug message="HealthMon: deviceTemperature: '$deviceTemperature'"
 :log debug message="HealthMon: deviceMemFree: '$deviceMemFree'"
 :log debug message="HealthMon: deviceMemTotal: '$deviceMemTotal'"
 :log debug message="HealthMon: deviceDiskFree: '$deviceDiskFree'"
@@ -46,7 +43,6 @@
 :log debug message="HealthMon: deviceCPULoad: '$deviceCPULoad'"
 
 :set postRequestPayloadParts {
-	"deviceTemperature"="$deviceTemperature";
 	"deviceMemFree"="$deviceMemFree";
 	"deviceMemTotal"="$deviceMemTotal";
 	"deviceDiskFree"="$deviceDiskFree";
