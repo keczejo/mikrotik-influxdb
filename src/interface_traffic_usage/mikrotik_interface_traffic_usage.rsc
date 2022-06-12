@@ -145,7 +145,7 @@
 
 			:log info message="ITU: Item: $itemID Updated data and now sending a notification."
 			
-			:set postRequestPayload ( "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_rx=$currentItemNowRx" . "\n" .  "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_tx=$currentItemNowTx" )
+			:set postRequestPayload ( "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_rx=$currentItemNowRx" . "\n" .  "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_tx=$currentItemNowTx" . "\n" .  "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_rx_diff=$currentItemDiffRx" . "\n" .  "monitoring,interface=$currentItemName,instance=$deviceIdentity traffic_tx_diff=$currentItemDiffTx")
 			/tool fetch url="$influxDBURL" http-header-field="Authorization: TOKEN YOUR-TOKEN,Content-Type: text/plain; charset=utf-8,Content-Type: text/plain; charset=utf-8" keep-result=no http-method=post http-data="$postRequestPayload"
 		}
 
