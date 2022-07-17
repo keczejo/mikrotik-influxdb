@@ -1,5 +1,7 @@
 # MikroTik scripts
 
+Recomended Grafana dashboard https://grafana.com/grafana/dashboards/16589
+
 ## Mikrotik Interface Traffic Usage
 
 Counts rx, tx and total transferred bytes on network interfaces. Stores results in interface's comment and pushes them to InfluxDB.
