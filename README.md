@@ -16,10 +16,14 @@ You can use WebFig, Winbox or other way to modify the comment. We use CLI:
 ```
 #### Import scripts to MikroTik
 
-#### Set InfluxDB URL in one of used scripts
+#### Set InfluxDB URL, organization and bucket in one of used scripts
 
 ```bash
 :global influxDBURL "http://influx.db.server:8086/api/v2/write?org=ORAGNIZATION&bucket=BUCKET&precision=ns"
+```
+#### Set Authorization Token inside script
+```bash
+/tool fetch url="$influxDBURL" http-header-field="Authorization: TOKEN YOUR-TOKEN,Content-Type: text/plain; charset=utf-8,Content-Type: text/plain; charset=utf-8" keep-result=no http-method=post http-data="$postRequestPayload"
 ```
 
 #### Configure system scheduler
