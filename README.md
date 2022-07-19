@@ -1,6 +1,6 @@
 # MikroTik scripts
 
-Recomended Grafana dashboard https://grafana.com/grafana/dashboards/16589
+Recomended Grafana dashboard https://grafana.com/grafana/dashboards/16601
 
 ## Mikrotik Interface Traffic Usage
 
